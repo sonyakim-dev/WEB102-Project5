@@ -7,6 +7,8 @@ const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 function App() {
   const [brewery, setBrewery] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
+  const [totalCities, setTotalCities] = useState({});
+  const [totalTypes, setTotalTypes] = useState({});
   const [inputFilter, setInputFilter] = useState({
     size: "",
     zip: "",
@@ -26,17 +28,24 @@ function App() {
   // };
 
   const fetchAPI = async (size = "", zip = "") => {
-    console.log("fetchAPI:", size, zip);
+    // console.log("fetchAPI:", size, zip);
     const json = await (
       await fetch(
-        `https://api.openbrewerydb.org/v1/breweries${
-          zip != "" ? "?by_postal=" + zip : ""
-        }${size != "" ? "?by_type=" + size : ""}`
+        `https://api.openbrewerydb.org/v1/breweries?${
+          zip != "" ? "&by_postal=" + zip : ""
+        }${size != "" ? "&by_type=" + size : ""}`
       )
     ).json();
     setBrewery(json);
     setTotalNum(json.length);
-    setInputFilter({ size: "", zip: "" });
+    json.map((brew) => {
+      setTotalCities((prev) => {
+        return { ...prev, [brew.city]: true };
+      });
+      setTotalTypes((prev) => {
+        return { ...prev, [brew.brewery_type]: true };
+      });
+    });
   };
 
   const handleInputChange = (e) => {
@@ -46,6 +55,8 @@ function App() {
   };
 
   const handleSubmit = () => {
+    setTotalCities({});
+    setTotalTypes({});
     fetchAPI(inputFilter.size, inputFilter.zip);
   };
 
@@ -65,11 +76,11 @@ function App() {
         </div>
         <div className="Sum Cities">
           <strong>CITIES</strong>
-          <p></p>
+          <p>{Object.keys(totalCities).length}</p>
         </div>
         <div className="Sum Types">
           <strong>TYPES</strong>
-          <p></p>
+          <p>{Object.keys(totalTypes).length}</p>
         </div>
       </div>
 
@@ -98,19 +109,21 @@ function App() {
         <button onClick={handleSubmit}>Search</button>
       </div>
 
-      {brewery.map((brew) => (
-        <Brew
-          key={brew.id}
-          name={brew.name}
-          street={brew.street}
-          city={brew.city}
-          state={brew.state}
-          postal={brew.postal_code.slice(0, 5)}
-          website={brew.website_url}
-          phone={brew.phone}
-          type={brew.brewery_type}
-        />
-      ))}
+      {brewery.map((brew) => {
+        return (
+          <Brew
+            key={brew.id}
+            name={brew.name}
+            street={brew.street}
+            city={brew.city}
+            state={brew.state}
+            postal={brew.postal_code.slice(0, 5)}
+            website={brew.website_url}
+            phone={brew.phone}
+            type={brew.brewery_type}
+          />
+        );
+      })}
     </div>
   );
 }
