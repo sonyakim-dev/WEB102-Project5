@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./App.css";
 import Brew from "./components/Brew";
 
@@ -40,10 +41,12 @@ function App() {
     setTotalNum(json.length);
     json.map((brew) => {
       setTotalCities((prev) => {
-        return { ...prev, [brew.city]: true };
+        let count = brew.city in prev ? prev[brew.city] + 1 : 1;
+        return { ...prev, [brew.city]: count };
       });
       setTotalTypes((prev) => {
-        return { ...prev, [brew.brewery_type]: true };
+        let count = brew.brewery_type in prev ? prev[brew.brewery_type] + 1 : 1;
+        return { ...prev, [brew.brewery_type]: count };
       });
     });
   };
@@ -111,17 +114,28 @@ function App() {
 
       {brewery.map((brew) => {
         return (
-          <Brew
+          <Link
             key={brew.id}
-            name={brew.name}
-            street={brew.street}
-            city={brew.city}
-            state={brew.state}
-            postal={brew.postal_code.slice(0, 5)}
-            website={brew.website_url}
-            phone={brew.phone}
-            type={brew.brewery_type}
-          />
+            to={`/detail/${brew.id}`}
+            state={{
+              id: brew.id,
+              name: brew.name,
+              address: `${brew.street}, ${brew.city}, ${brew.state} ${brew.postal_code}`,
+              longitude: brew.longitude,
+              latitude: brew.latitude,
+              type: brew.brewery_type,
+              website: brew.website_url,
+              phone: brew.phone,
+            }}
+          >
+            <Brew
+              name={brew.name}
+              street={brew.street}
+              city={brew.city}
+              state={brew.state}
+              postal={brew.postal_code.slice(0, 5)}
+            />
+          </Link>
         );
       })}
     </div>
