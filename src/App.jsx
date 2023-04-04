@@ -29,10 +29,9 @@ function App() {
   // };
 
   const fetchAPI = async (size = "", zip = "") => {
-    // console.log("fetchAPI:", size, zip);
     const json = await (
       await fetch(
-        `https://api.openbrewerydb.org/v1/breweries?${
+        `https://api.openbrewerydb.org/v1/breweries?per_page=99${
           zip != "" ? "&by_postal=" + zip : ""
         }${size != "" ? "&by_type=" + size : ""}`
       )
@@ -88,7 +87,7 @@ function App() {
       </div>
 
       <div className="Filter">
-        <label for="size">Type: </label>
+        <label htmlFor="size">Type: </label>
         <select id="size" name="size" onChange={handleInputChange}>
           <option value=""></option>
           <option value="nano">Nano</option>
@@ -99,7 +98,7 @@ function App() {
           <option value="bar">Bar</option>
         </select>
 
-        <label for="zip">Zip Code: </label>
+        <label htmlFor="zip">Zip Code: </label>
         <input
           id="zip"
           name="zip"

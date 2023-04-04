@@ -4,13 +4,13 @@ Submitted by: **Soyeon Kim**
 
 This web app: **Find brewery near you**
 
-Time spent: **X** hours spent in total
+Time spent: **4** hours spent in total
 
 ## Required Features
 
 The following **required** functionality is completed:
 
-- [ ] **The app includes at least two unique chart developed using the fetched data that tell an interesting story**
+- [x] **The app includes at least two unique chart developed using the fetched data that tell an interesting story**
 - [x] **Clicking on an item in the list view displays more details about it**
 - [x] **Clicking on an item has a direct, unique link to that item's detail view page**
 
@@ -28,7 +28,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='./src/assets/' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='./src/assets/Screen-Recording-2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ...  [Online Converter](https://www.onlineconverter.com/video-to-gif)
